@@ -107,59 +107,49 @@ $('.input-block input').on('input', function() {
 });
 
 
-$('#contact-form').submit(function(e) {
-    e.preventDefault();
-    const formData = $(this).serializeArray();
-    const data = {};
-    
-    // Initialize services as an array to hold multiple values
-    data['services[]'] = [];
-
-    $.each(formData, function(index, field) {
-        if (field.name === 'services[]') {
-            // Push the value to the array for services
-            data['services[]'].push(field.value);
-        } else {
-            // For other fields, just assign the value
-            data[field.name] = field.value;
-        }
+$(document).ready(function() {
+    // Contact Form Submission
+    $('#contact-form').submit(function(e) {
+      e.preventDefault(); // Prevent default form submission
+  
+      // 1. Get form data as an object
+      const formData = $(this).serializeArray().reduce((obj, item) => {
+          obj[item.name] = item.value;
+          return obj;
+      }, {});
+  
+      console.log(formData); // Log the populated data object
+  
+      // 2. Send the data to the PHP script using AJAX
+      $.ajax({
+          type: 'POST',
+          url: '/assets/scripts/email.php', 
+          data: formData, // Use the populated formData object
+          success: function(response) {
+              console.log('Message Sent successfully!', response); // Log success with server's response
+              // Display success message
+              const message = `Successfully Sent...`;
+              $('#message').html(`<i class="fa fa-check-circle" aria-hidden="true"></i> ${message}`)
+                           .fadeIn()
+                           .delay(3000)
+                           .fadeOut(function() {
+                              // After the message fades out, reset the form
+                              $('#contact-form')[0].reset();
+                           });
+          },
+          error: function(xhr, status, error) {
+              console.error('Error sending message:', error); // Log errors to the console
+              // Display error message
+              const errorMessage = `Error Sending... Please try again!!!`;
+              $('#message').html(`<i class="fa fa-exclamation-circle" aria-hidden="true"></i> ${errorMessage}`)
+                           .fadeIn()
+                           .delay(3000)
+                           .fadeOut();
+          }
+      });
     });
-
-    // console.log(data); // log the form data to the console
-    window.location.href = window.location.href.split('#')[0] + "#contact";
-    // Send the data to the PHP script using AJAX
-    $.ajax({
-        type: 'POST',
-        url: '/assets/scripts/email.php', 
-        data: data,
-        success: function(response) {
-            console.log('Project Request Sent successfully!');
-            const message = `Successfully Sent...`;
-            $('#message').html(`<i class="fa fa-check-circle" aria-hidden="true"></i> ${message}`)
-                                 .fadeIn()
-                                 .delay(3000)
-                                 .fadeOut(function() {
-                                    // After the message fades out, reload the page
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 600); // Adding a slight delay before the reload
-                                });
-        },
-        error: function(xhr, status, error) {
-            console.log('Error sending email:', error);
-            const errorMessage = `Error Sending... Please try again!!!`;
-            $('#message').html(`<i class="fa fa-exclamation-circle" aria-hidden="true"></i> ${errorMessage}`)
-                                 .fadeIn()
-                                 .delay(3000)
-                                 .fadeOut(function() {
-                                    // After the message fades out, reload the page
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 600); // Adding a slight delay before the reload
-                                });
-        }
-    });
-});
+  
+  });
 
 // FOOTER
 
