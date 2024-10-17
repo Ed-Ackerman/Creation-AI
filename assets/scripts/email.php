@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $to = "info@zorithautomations.com"; // Admin email
+    $to = "edmcdarwin777@gmail.com"; // Admin email
     $subject = "New User Joined";
 
     // Collect form data
