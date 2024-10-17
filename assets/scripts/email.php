@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $to = "info@zorithautomations.com"; // Admin email
-    $subject = "New Project Request";
+    $subject = "New User Joined";
 
     // Collect form data
     $name = $_POST['name'];
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mail($to, $subject, $body, $headers)) {
         // Send confirmation email to the user
-        $confirmationSubject = "Confirmation of Your Project Request";
+        $confirmationSubject = "Thanks For Joining...";
         $confirmationBody = "
             <table cellpadding='0' cellspacing='0' border='0' width='100%' style='background-color: #0d1016; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
                 <tr>

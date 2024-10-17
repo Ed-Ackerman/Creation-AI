@@ -118,7 +118,7 @@ $(document).ready(function() {
           return obj;
       }, {});
   
-      console.log(formData); // Log the populated data object
+    //   console.log(formData); // Log the populated data object
   
       // 2. Send the data to the PHP script using AJAX
       $.ajax({
